@@ -57,11 +57,3 @@ The application uses two tables in the MySQL database:
 ## Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvement, please open an issue or create a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
---- 
-
-Feel free to modify this template according to your specific application features and requirements!
