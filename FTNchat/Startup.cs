@@ -54,7 +54,9 @@ namespace FTNchat
         await next.Invoke();
     });
 
-            app.UseCors("AllowAnyOrigin"); // Enable CORS before routing
+
+
+            app.UseCors("AllowAnyOrigin"); 
 
             app.UseRouting();
 
