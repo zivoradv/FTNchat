@@ -33,27 +33,36 @@ namespace FTNchat
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
+                options.AddPolicy("AllowAnyOrigin",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000")
-                               .AllowAnyMethod()
-                               .AllowAnyHeader();
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
                     });
             });
+
 
             services.AddLogging();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors("AllowSpecificOrigin");
+            app.Use(async (context, next) =>
+    {
+        Console.WriteLine("CORS middleware executing...");
+        await next.Invoke();
+    });
+
+            app.UseCors("AllowAnyOrigin"); // Enable CORS before routing
 
             app.UseRouting();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
+
     }
 }

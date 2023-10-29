@@ -12,7 +12,7 @@ const LandingPage = () => {
       .catch((error) => console.error('Error fetching users:', error));
   }, []); // Empty dependency array ensures this effect runs once after initial render
 
-
+  console.log(users)
   return (
     <div>
       <h2>User Table</h2>

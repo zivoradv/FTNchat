@@ -5,6 +5,7 @@ using FTNchat.Models;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Cors;
 
 namespace FTNchat.Controllers
 {

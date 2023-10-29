@@ -16,7 +16,6 @@ options =>
 });
 
 
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -33,6 +32,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
@@ -46,7 +47,5 @@ app.MapRazorPages();
 app.MapControllers();
 
 app.Run();
-
- app.UseCors("AllowSpecificOrigin");
 
 app.UseEndpoints(endpoints => endpoints.MapControllers());
