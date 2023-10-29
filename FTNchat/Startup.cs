@@ -33,10 +33,10 @@ namespace FTNchat
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAllOrigins",
+                options.AddPolicy("AllowSpecificOrigin",
                     builder =>
                     {
-                        builder.AllowAnyOrigin()
+                        builder.WithOrigins("http://localhost:3000")
                                .AllowAnyMethod()
                                .AllowAnyHeader();
                     });
@@ -47,14 +47,13 @@ namespace FTNchat
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("AllowSpecificOrigin");
+
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers(); // Ensure this line is present to map API controllers
+                endpoints.MapControllers();
             });
-
-
-            app.UseCors("AllowAllOrigins");
         }
     }
 }

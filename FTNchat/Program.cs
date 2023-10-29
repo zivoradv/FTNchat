@@ -46,3 +46,7 @@ app.MapRazorPages();
 app.MapControllers();
 
 app.Run();
+
+ app.UseCors("AllowSpecificOrigin");
+
+app.UseEndpoints(endpoints => endpoints.MapControllers());
