@@ -18,6 +18,18 @@ namespace FTNchat
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+     {
+         options.AddDefaultPolicy(builder =>
+{
+    builder.AllowAnyOrigin() // Allow any origin for testing
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials();
+});
+     });
+
             services.AddDbContext<FTNchatContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
@@ -31,16 +43,6 @@ namespace FTNchat
                         options.JsonSerializerOptions.WriteIndented = true; // Format the JSON for readability
                     });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAnyOrigin",
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    });
-            });
 
 
             services.AddLogging();
@@ -48,17 +50,9 @@ namespace FTNchat
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.Use(async (context, next) =>
-    {
-        Console.WriteLine("CORS middleware executing...");
-        await next.Invoke();
-    });
-
-
-
-            app.UseCors("AllowAnyOrigin"); 
-
-            app.UseRouting();
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+    
+app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {

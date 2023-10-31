@@ -1,12 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using FTNchat.Data;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.WithOrigins("http://localhost:3000");
+                      });
+});
 
 builder.Services.AddDbContext<FTNchatContext>(
 options =>
@@ -15,6 +21,11 @@ options =>
     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.1.0-mysql"));
 });
 
+builder.Services.AddControllers();
+
+
+builder.Services.AddRazorPages();
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
@@ -35,17 +46,13 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseCors(MyAllowSpecificOrigins);
 
-app.MapRazorPages();
+app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-
-app.UseEndpoints(endpoints => endpoints.MapControllers());

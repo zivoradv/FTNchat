@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-
+import axios from 'axios'
 const LandingPage = () => {
 
-    const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Fetch users from the API endpoint
-    fetch('https://localhost:7195/api/Users')
-      .then((response) => response.json())
-      .then((data) => setUsers(data))
-      .catch((error) => console.error('Error fetching users:', error));
-  }, []); // Empty dependency array ensures this effect runs once after initial render
+    axios.get('https://localhost:7195/api/Users')
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching users:', error);
+      });
+  }, []); 
 
-  console.log(users)
   return (
     <div>
       <h2>User Table</h2>
@@ -26,10 +27,10 @@ const LandingPage = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.userId}>
-              <td>{user.userId}</td>
-              <td>{user.username}</td>
-              <td>{user.createdAt}</td>
+            <tr key={user.UserId}>
+              <td>{user.UserId}</td>
+              <td>{user.Username}</td>
+              <td>{user.CreatedAt}</td>
             </tr>
           ))}
         </tbody>
