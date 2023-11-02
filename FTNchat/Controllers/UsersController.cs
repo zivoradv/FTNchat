@@ -6,6 +6,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Cors;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FTNchat.Controllers
 {
@@ -57,6 +61,7 @@ namespace FTNchat.Controllers
         }
 
         // POST: api/Users
+        [EnableCors("origin")]
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] User user)
         {
@@ -65,10 +70,37 @@ namespace FTNchat.Controllers
                 return BadRequest(ModelState);
             }
 
+            user.Password = HashPassword(user.Password);
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            user.Password = null;
+
             return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+        }
+
+        private string HashPassword(string password)
+        {
+            // Generate a random salt
+            byte[] salt = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            // Hash the password using PBKDF2 and the salt
+            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            // Combine the salt and password hash for storage
+            string hashedPasswordWithSalt = Convert.ToBase64String(salt) + ":" + hashedPassword;
+
+            return hashedPasswordWithSalt;
         }
 
         // PUT: api/Users/5

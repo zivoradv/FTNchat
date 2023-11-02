@@ -1,16 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using FTNchat.Data;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
+    options.AddPolicy("origin",
                       builder =>
                       {
-                          builder.WithOrigins("http://localhost:3000");
+                          builder.WithOrigins("*")
+                                 .AllowAnyMethod()
+                                 .AllowAnyHeader();
                       });
 });
 
@@ -49,7 +49,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("origin");
 
 app.UseAuthorization();
 

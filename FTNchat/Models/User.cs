@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FTNchat.Models;
-
-public partial class User
+namespace FTNchat.Models
 {
-    public int UserId { get; set; }
+    public partial class User
+    {
+        public int UserId { get; set; }
 
-    public string Username { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+        public string Password { get; set; } = null!;
 
-    public DateTime? CreatedAt { get; set; }
+        public string Email { get; set; } = null!;
 
-    public virtual ICollection<Chatmessage> ChatmessageReceivers { get; set; } = new List<Chatmessage>();
+        public DateTime? Birthday { get; set; }
 
-    public virtual ICollection<Chatmessage> ChatmessageSenders { get; set; } = new List<Chatmessage>();
+        public string? Gender { get; set; }
+
+        public string? Address { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
+
+        public virtual ICollection<Chatmessage> ChatmessageReceivers { get; set; } = new List<Chatmessage>();
+
+        public virtual ICollection<Chatmessage> ChatmessageSenders { get; set; } = new List<Chatmessage>();
+    }
 }
