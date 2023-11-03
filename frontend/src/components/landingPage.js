@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+
 const LandingPage = () => {
 
   const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    axios.get('https://localhost:7195/api/Users')
-      .then((response) => {
-        setUsers(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching users:', error);
-      });
-  }, []); 
 
   return (
     <div>

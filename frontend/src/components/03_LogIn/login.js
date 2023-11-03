@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import './login.css'; 
+import './login.css';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -12,10 +14,24 @@ function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    
+
+    try {
+      const response = await axios.post('https://localhost:7195/api/auth/login', formData);
+
+      if (response.status === 200) {
+        const user = response.data;
+
+        Cookies.set('user', JSON.stringify(user));
+
+        window.location.href = '/';
+      } else {
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('Error occurred during login:', error);
+    }
   };
 
   return (

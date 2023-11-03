@@ -39,7 +39,6 @@ namespace FTNchat.Controllers
             }
             catch (Exception ex)
             {
-                // Log the error
                 _logger.LogError(ex, "Error occurred while retrieving users.");
                 return StatusCode(500, "Internal Server Error");
             }
@@ -82,25 +81,14 @@ namespace FTNchat.Controllers
 
         private string HashPassword(string password)
         {
-            // Generate a random salt
-            byte[] salt = new byte[16];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-
-            // Hash the password using PBKDF2 and the salt
             string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
-                salt: salt,
+                salt: new byte[0], // Empty salt
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
 
-            // Combine the salt and password hash for storage
-            string hashedPasswordWithSalt = Convert.ToBase64String(salt) + ":" + hashedPassword;
-
-            return hashedPasswordWithSalt;
+            return hashedPassword;
         }
 
         // PUT: api/Users/5
