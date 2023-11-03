@@ -1,5 +1,5 @@
-/.vs
-/obj
-/FTNchat/bin
-/FTNchat/obj
-/frontend/node_modules
+backend/.vs
+backend/obj
+backend/bin
+backend/wwwroot
+frontend/node_modules   
