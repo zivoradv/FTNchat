@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "./login.scss";
-import React, { useState } from "react";
-import "./login.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -44,6 +42,7 @@ function Login() {
       <img
         className="heroImage"
         src="./assets/illustrations/peopleMessaging.png"
+        alt="login.png"
       />
       <div className="login-form">
         <h2>Login</h2>

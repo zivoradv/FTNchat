@@ -15,7 +15,7 @@ function Header() {
   return (
     <div className="header">
       <div className="logo">
-        <img src="./assets/logo.png" />{" "}
+        <img src="./assets/logo.png" alt="logo.png"/>{" "}
         <span className="header-text"> FTNchat </span>
       </div>
       <div className="menu">
