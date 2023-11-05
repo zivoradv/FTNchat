@@ -31,12 +31,25 @@
       text-decoration: none;
       display: flex;
       align-items: center;
+      justify-content: center;
       transition: transform 0.35s ease;
       svg {
         margin-right: 0.2em;
       }
       &:hover {
         transform: scale(1.05);
+        &::after {
+          width: 100%;
+        }
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        height: 1px;
+        background-color: white;
+        width: 0%;
+        top: calc(100% + 1px);
+        transition: width 0.35s ease;
       }
     }
   }

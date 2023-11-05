@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/01_Header/header";
-import LandingPage from "./components/landingPage";
+import LandingPage from "./components/LandingPage/landingPage";
 // import FriendsPage from './components/friendsPage';
 // import GroupsPage from './components/groupsPage';
 import LoginPage from "./components/03_LogIn/login";

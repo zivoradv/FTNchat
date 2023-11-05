@@ -2,9 +2,10 @@ import React, { useContext, useState } from "react";
 import { userContext } from "../../App";
 import "./login.scss";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const { loginUser } = useContext(userContext);
   const [formData, setFormData] = useState({
     email: "",
@@ -30,6 +31,7 @@ function Login() {
 
         loginUser(user);
 
+        navigate("/");
       } else {
         console.error("Login failed");
       }
@@ -39,7 +41,12 @@ function Login() {
   };
 
   return (
-    <div className="login-wrapper">
+    <div
+      className="login-wrapper"
+      style={{
+        backgroundImage: "url('./assets/illustrations/backgroundLines.png')",
+      }}
+    >
       <img
         className="heroImage"
         src="./assets/illustrations/peopleMessaging.png"
