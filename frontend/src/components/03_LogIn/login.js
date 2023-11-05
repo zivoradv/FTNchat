@@ -28,9 +28,8 @@ function Login() {
       if (response.status === 200) {
         const user = response.data;
 
-        loginUser(JSON.parse(user));
+        loginUser(user);
 
-        window.location.href = "/";
       } else {
         console.error("Login failed");
       }

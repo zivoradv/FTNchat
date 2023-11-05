@@ -51,7 +51,7 @@ namespace FTNchat.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal Server Error");
+                return StatusCode(500, "Internal Server Error" + ex);
             }
         }
 
@@ -70,8 +70,8 @@ namespace FTNchat.Controllers
 
         public class UserLoginRequest
         {
-            public string Email { get; set; }
-            public string Password { get; set; }
+            public string? Email { get; set; }
+            public string? Password { get; set; }
         }
 
 

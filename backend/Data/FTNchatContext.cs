@@ -16,6 +16,10 @@ public partial class FTNchatContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<Friend> Friends { get; set; }
+    public virtual DbSet<Notification> Notifications { get; set; }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -62,6 +66,52 @@ public partial class FTNchatContext : DbContext
             entity.Property(e => e.Password).HasMaxLength(100);
             entity.Property(e => e.Username).HasMaxLength(50);
         });
+
+         modelBuilder.Entity<Friend>(entity =>
+            {
+                entity.HasKey(e => e.FriendshipID).HasName("PRIMARY");
+
+                entity.ToTable("friends");
+
+                entity.Property(e => e.FriendshipID).HasColumnName("FriendshipID");
+                entity.Property(e => e.UserID).HasColumnName("UserID");
+                entity.Property(e => e.FriendID).HasColumnName("FriendID");
+                entity.Property(e => e.Status).HasMaxLength(50);
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                    .HasColumnType("timestamp");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Friends)
+                    .HasForeignKey(d => d.UserID)
+                    .HasConstraintName("FK_Friends_Users_UserID");
+
+                entity.HasOne(d => d.FriendUser)
+                    .WithMany()
+                    .HasForeignKey(d => d.FriendID)
+                    .HasConstraintName("FK_Friends_Users_FriendID");
+            });
+
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasKey(e => e.NotificationID).HasName("PRIMARY");
+
+                entity.ToTable("notifications");
+
+                entity.Property(e => e.NotificationID).HasColumnName("NotificationID");
+                entity.Property(e => e.UserID).HasColumnName("UserID");
+                entity.Property(e => e.Message).HasColumnType("text");
+                entity.Property(e => e.Link).HasMaxLength(255);
+                entity.Property(e => e.ReadStatus).HasColumnType("bit");
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                    .HasColumnType("timestamp");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Notifications)
+                    .HasForeignKey(d => d.UserID)
+                    .HasConstraintName("FK_Notifications_Users_UserID");
+            });
 
         OnModelCreatingPartial(modelBuilder);
     }
