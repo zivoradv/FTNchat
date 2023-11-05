@@ -16,15 +16,7 @@ namespace FTNchat.Models
 
         public bool IsDeleted { get; set; }
 
-        public string? AttachmentPath { get; set; }
-
-        public string? MessageType { get; set; }
-
-        public string? EncryptedMessageText { get; set; }
-
         public DateTime? ReadTimestamp { get; set; }
-
-        public DateTime? ExpirationTimestamp { get; set; }
 
         public DateTime? Timestamp { get; set; }
 

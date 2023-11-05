@@ -29,13 +29,12 @@ namespace FTNchat.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<string>> GetUsers()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             try
             {
                 var users = await _context.Users.ToListAsync();
-                var jsonUsers = JsonSerializer.Serialize(users);
-                return jsonUsers;
+                return Ok(users);
             }
             catch (Exception ex)
             {
@@ -44,9 +43,10 @@ namespace FTNchat.Controllers
             }
         }
 
+
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<string>> GetUser(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -55,9 +55,9 @@ namespace FTNchat.Controllers
                 return NotFound();
             }
 
-            var jsonUser = JsonSerializer.Serialize(user);
-            return jsonUser;
+            return user;
         }
+
 
         // POST: api/Users
         [EnableCors("origin")]
