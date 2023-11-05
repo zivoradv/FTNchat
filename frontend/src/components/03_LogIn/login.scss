@@ -1,0 +1,90 @@
+.login-wrapper {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+  gap: 40px;
+
+  .heroImage {
+    display: block;
+    flex-grow: 1;
+    width: 50%;
+    max-width: 520px;
+  }
+  .login-form {
+    flex-shrink: 0;
+    max-width: 360px;
+    width: 100%;
+    padding: 30px;
+    background-color: #fff5e0;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px 0px rgba(20, 30, 70, 0.4);
+    color: #141e46;
+
+    h2 {
+      margin-bottom: 1em;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      .form-group {
+        width: 100%;
+        margin-bottom: 1em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        text-align: left;
+        width: 100%;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        height: 3em;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        &::placeholder {
+          font-size: 0.9em;
+        }
+      }
+
+      button {
+        background: rgb(199, 0, 57);
+        font-size: 16px;
+        height: 3em;
+        background: linear-gradient(
+          90deg,
+          rgba(199, 0, 57, 1) 0%,
+          rgba(255, 105, 105, 1) 100%
+        );
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        width: 100%;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+        margin-top: 1em;
+        &:hover {
+          cursor: pointer;
+          transform: translateY(-5%);
+          box-shadow: 0 1px 4px 0 rgba(20, 30, 70, 0.4);
+        }
+      }
+    }
+  }
+}
