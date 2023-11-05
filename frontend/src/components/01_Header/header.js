@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { userContext } from "../../App";
+import { Link, useLocation } from "react-router-dom";
 import {
   Home,
   People,
@@ -8,38 +9,53 @@ import {
   Person,
   Notifications,
   ExitToApp,
+  Logout,
 } from "@mui/icons-material";
 import "./header.scss";
 
 function Header() {
+  const { user, logoutUser } = useContext(userContext);
+  const location = useLocation();
+
   return (
     <div className="header">
-      <div className="logo">
-        <img src="./assets/logo.png" alt="logo.png"/>{" "}
+      <Link to="/" className="logo">
+        <img src="./assets/logo.png" alt="logo.png" />{" "}
         <span className="header-text"> FTNchat </span>
-      </div>
+      </Link>
       <div className="menu">
-        <Link to="/">
-          <Home /> <span className="header-text"> Home </span>
-        </Link>
-        <Link to="/friends">
-          <People /> <span className="header-text"> Friends </span>
-        </Link>
-        <Link to="/groups">
-          <Group /> <span className="header-text"> Groups </span>
-        </Link>
-        <Link to="/login">
-          <Login /> <span className="header-text"> Login </span>
-        </Link>
-        <Link to="/register">
-          <ExitToApp /> <span className="header-text"> Register </span>
-        </Link>
-        <Link to="/profile">
-          <Person /> <span className="header-text"> Profile </span>
-        </Link>
-        <Link to="/notifications">
-          <Notifications /> <span className="header-text"> Notifications </span>
-        </Link>
+        {user ? (
+          <>
+            <Link to="/profile">
+              <Person /> <span className="header-text"> Profile </span>
+            </Link>
+            <Link to="/friends">
+              <People /> <span className="header-text"> Friends </span>
+            </Link>
+            <Link to="/groups">
+              <Group /> <span className="header-text"> Groups </span>
+            </Link>
+            <Link to="/notifications">
+              <Notifications />{" "}
+              <span className="header-text"> Notifications </span>
+            </Link>
+            <Link to="/login" onClick={logoutUser}>
+              <Logout /> <span className="header-text"> Log out </span>
+            </Link>
+          </>
+        ) : (
+          <>
+            {location.pathname !== "/login" ? (
+              <Link to="/login">
+                <Login /> <span className="header-text"> Log in </span>
+              </Link>
+            ) : (
+              <Link to="/register">
+                <ExitToApp /> <span className="header-text"> Register </span>
+              </Link>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { userContext } from "../../App";
 import "./login.scss";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 function Login() {
+  const { loginUser } = useContext(userContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,7 +28,7 @@ function Login() {
       if (response.status === 200) {
         const user = response.data;
 
-        Cookies.set("user", JSON.stringify(user));
+        loginUser(JSON.parse(user));
 
         window.location.href = "/";
       } else {
@@ -72,6 +74,7 @@ function Login() {
             />
           </div>
           <button type="submit">Login</button>
+          <Link to="/register">Don't have an account?</Link>
         </form>
       </div>
     </div>
