@@ -1,15 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FTNchat.Data;
 using FTNchat.Models;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Cors;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FTNchat.Controllers
 {
@@ -17,79 +12,100 @@ namespace FTNchat.Controllers
     [ApiController]
     public class ChatMessagesController : ControllerBase
     {
-        private readonly List<Chatmessage> _chatMessages = new List<Chatmessage>();
+        private readonly FTNchatContext _context;
+
+        public ChatMessagesController(FTNchatContext context)
+        {
+            _context = context;
+        }
 
         // GET: api/chatmessages
         [HttpGet]
-        public ActionResult<IEnumerable<Chatmessage>> GetChatMessages()
+        public async Task<ActionResult<IEnumerable<Chatmessage>>> GetChatMessages()
         {
-            // Return all chat messages
-            return _chatMessages;
+            var chatMessages = await _context.Chatmessages.ToListAsync();
+            return chatMessages;
         }
 
         // GET: api/chatmessages/5
         [HttpGet("{id}")]
-        public ActionResult<Chatmessage> GetChatMessage(int id)
+        public async Task<ActionResult<Chatmessage>> GetChatMessage(int id)
         {
-            // Find and return a chat message by its MessageId
-            var chatMessage = _chatMessages.Find(m => m.MessageId == id);
+            var chatMessage = await _context.Chatmessages.FindAsync(id);
+
             if (chatMessage == null)
             {
-                return NotFound(); // 404 Not Found
+                return NotFound();
             }
+
             return chatMessage;
         }
 
         // POST: api/chatmessages
         [HttpPost]
-        public ActionResult<Chatmessage> CreateChatMessage([FromBody] Chatmessage message)
+        public async Task<ActionResult<Chatmessage>> CreateChatMessage([FromBody] Chatmessage message)
         {
-            // Simulate generating a unique MessageId and setting the Timestamp
-            message.MessageId = _chatMessages.Count + 1;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             message.Timestamp = DateTime.Now;
+            _context.Chatmessages.Add(message);
+            await _context.SaveChangesAsync();
 
-            // Add the new message to the list
-            _chatMessages.Add(message);
-
-            // Return a response with the created message and location
             return CreatedAtAction(nameof(GetChatMessage), new { id = message.MessageId }, message);
         }
 
         // PUT: api/chatmessages/5
         [HttpPut("{id}")]
-        public IActionResult UpdateChatMessage(int id, [FromBody] Chatmessage updatedMessage)
+        public async Task<IActionResult> UpdateChatMessage(int id, [FromBody] Chatmessage updatedMessage)
         {
-            // Find the message to update
-            var existingMessage = _chatMessages.Find(m => m.MessageId == id);
-            if (existingMessage == null)
+            if (id != updatedMessage.MessageId)
             {
-                return NotFound(); // 404 Not Found
+                return BadRequest();
             }
 
-            // Update the properties of the existing message
-            existingMessage.MessageText = updatedMessage.MessageText;
-            existingMessage.Timestamp = DateTime.Now; // Update the timestamp
+            _context.Entry(updatedMessage).State = EntityState.Modified;
 
-            // Return a 204 No Content response
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ChatMessageExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             return NoContent();
         }
 
         // DELETE: api/chatmessages/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteChatMessage(int id)
+        public async Task<IActionResult> DeleteChatMessage(int id)
         {
-            // Find the message to delete
-            var messageToRemove = _chatMessages.Find(m => m.MessageId == id);
-            if (messageToRemove == null)
+            var chatMessage = await _context.Chatmessages.FindAsync(id);
+            if (chatMessage == null)
             {
-                return NotFound(); // 404 Not Found
+                return NotFound();
             }
 
-            // Remove the message from the list
-            _chatMessages.Remove(messageToRemove);
+            _context.Chatmessages.Remove(chatMessage);
+            await _context.SaveChangesAsync();
 
-            // Return a 204 No Content response
             return NoContent();
+        }
+
+        private bool ChatMessageExists(int id)
+        {
+            return _context.Chatmessages.Any(e => e.MessageId == id);
         }
     }
 }
