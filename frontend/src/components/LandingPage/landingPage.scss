@@ -1,0 +1,19 @@
+.landingPage {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 20px;
+  width: 100%;
+  color: #141e46;
+
+  .heroImage {
+    width: 80%;
+    height: auto;
+  }
+
+  h1 {
+    margin-bottom: 1em;
+  }
+}

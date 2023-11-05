@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { userContext } from "../../App";
 import { Link, useLocation } from "react-router-dom";
 import {
-  Home,
   People,
   Group,
   Login,
@@ -45,11 +44,13 @@ function Header() {
           </>
         ) : (
           <>
-            {location.pathname !== "/login" ? (
+            {location.pathname !== "/login" && (
               <Link to="/login">
                 <Login /> <span className="header-text"> Log in </span>
               </Link>
-            ) : (
+            )}
+
+            {location.pathname !== "/register" && (
               <Link to="/register">
                 <ExitToApp /> <span className="header-text"> Register </span>
               </Link>

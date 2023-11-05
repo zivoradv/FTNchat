@@ -41,7 +41,12 @@ function Login() {
   };
 
   return (
-    <div className="login-wrapper">
+    <div
+      className="login-wrapper"
+      style={{
+        backgroundImage: "url('./assets/illustrations/backgroundLines.png')",
+      }}
+    >
       <img
         className="heroImage"
         src="./assets/illustrations/peopleMessaging.png"
