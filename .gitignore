@@ -2,3 +2,4 @@ backend/.vs
 backend/obj
 backend/bin
 frontend/node_modules   
+.DS_Store
