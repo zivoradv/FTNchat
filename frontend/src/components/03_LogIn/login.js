@@ -2,9 +2,10 @@ import React, { useContext, useState } from "react";
 import { userContext } from "../../App";
 import "./login.scss";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const { loginUser } = useContext(userContext);
   const [formData, setFormData] = useState({
     email: "",
@@ -30,7 +31,7 @@ function Login() {
 
         loginUser(JSON.parse(user));
 
-        window.location.href = "/";
+        navigate("/");
       } else {
         console.error("Login failed");
       }
