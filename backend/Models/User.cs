@@ -24,5 +24,6 @@ namespace FTNchat.Models
         public virtual ICollection<Chatmessage> ChatmessageReceivers { get; set; } = new List<Chatmessage>();
 
         public virtual ICollection<Chatmessage> ChatmessageSenders { get; set; } = new List<Chatmessage>();
+    
     }
 }

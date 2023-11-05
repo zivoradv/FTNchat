@@ -1,40 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
-const LandingPage = () => {
+import Cookies from 'js-cookie';
 
-  const [users, setUsers] = useState([]);
+const LandingPage = () => {
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios.get('https://localhost:7195/api/Users')
-      .then((response) => {
-        setUsers(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching users:', error);
-      });
-  }, []); 
+    const storedUser = Cookies.get('user');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+    }
+  }, []);
 
   return (
     <div>
-      <h2>User Table</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.UserId}>
-              <td>{user.UserId}</td>
-              <td>{user.Username}</td>
-              <td>{user.CreatedAt}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <h2>Welcome to FTNchat Application!</h2>
+      {user ? (
+        <div>
+          <h3>Hello, {user.username}!</h3>
+        </div>
+      ) : (
+        <p>
+          Welcome guest! Please register or login to explore the FTNchat application.
+        </p>
+      )}
     </div>
   );
 };
