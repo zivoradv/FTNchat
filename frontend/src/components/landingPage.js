@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+import React, { useContext } from "react";
+import { userContext } from "../App";
 
 const LandingPage = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUser = Cookies.get('user');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-    }
-  }, []);
+  const { user } = useContext(userContext);
 
   return (
     <div>
@@ -21,7 +13,8 @@ const LandingPage = () => {
         </div>
       ) : (
         <p>
-          Welcome guest! Please register or login to explore the FTNchat application.
+          Welcome guest! Please register or login to explore the FTNchat
+          application.
         </p>
       )}
     </div>

@@ -5,6 +5,10 @@
   appearance: none;
 }
 
+a {
+  color: inherit;
+}
+
 html,
 body,
 #root {
