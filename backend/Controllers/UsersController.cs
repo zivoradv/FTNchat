@@ -91,6 +91,32 @@ namespace FTNchat.Controllers
             return hashedPassword;
         }
 
+        // POST: api/Users/SearchUsers
+        // [HttpPost("SearchUsers")]
+        // public async Task<ActionResult<IEnumerable<User>>> SearchUsers([FromBody] string query)
+        // {
+        //     try
+        //     {
+        //         if (string.IsNullOrEmpty(query))
+        //         {
+        //             return BadRequest("Query parameter is required.");
+        //         }
+
+        //         var users = await _context.Users
+        //             .Where(user =>
+        //                 user.Username.Contains(query) ||
+        //                 user.Email.Contains(query))
+        //             .ToListAsync();
+
+        //         return Ok(users);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         _logger.LogError(ex, "Error occurred while searching users.");
+        //         return StatusCode(500, "Internal Server Error");
+        //     }
+        // }
+
         // PUT: api/Users/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, [FromBody] User user)
