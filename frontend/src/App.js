@@ -10,15 +10,16 @@ import LoginPage from "./components/03_LogIn/login";
 import RegisterPage from "./components/02_Register/register";
 // import ProfilePage from './components/profilePage';
 // import NotificationsPage from './components/notificationsPage';
+import ChatPage from "./components/04_Chat/ChatPage";
 
 export const userContext = createContext(null);
 
 function App() {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    loginUser({ username: "alooo" }); // manuelno logovanje korisnika radi testiranja
-  }, []);
+  // useEffect(() => {
+  //   loginUser({ username: "alooo" }); // manuelno logovanje korisnika radi testiranja
+  // }, []);
 
   function loginUser(user) {
     Cookies.set("user", JSON.stringify(user));
@@ -34,8 +35,13 @@ function App() {
       <Router>
         <div className="App">
           <Header />
+
           <Routes>
-            <Route path="/" exact element={<LandingPage />} />
+            {user ? (
+              <Route path="/" element={<ChatPage />} />
+            ) : (
+              <Route path="/" element={<LandingPage />} />
+            )}
             {/* <Route path="/friends" component={FriendsPage} />
           <Route path="/groups" component={GroupsPage} /> */}
             <Route path="/login" element={<LoginPage />} />
