@@ -17,9 +17,9 @@ export const userContext = createContext(null);
 function App() {
   const [user, setUser] = useState(null);
 
-  // useEffect(() => {
-  //   loginUser({ username: "alooo" }); // manuelno logovanje korisnika radi testiranja
-  // }, []);
+  useEffect(() => {
+    loginUser({ username: "alooo" }); // manuelno logovanje korisnika radi testiranja
+  }, []);
 
   function loginUser(user) {
     Cookies.set("user", JSON.stringify(user));
