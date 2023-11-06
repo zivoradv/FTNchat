@@ -30,20 +30,18 @@
     gap: 20px;
 
     a {
+      position: relative;
       color: white;
       text-decoration: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.35s ease;
 
       svg {
         margin-right: 0.2em;
       }
 
       &:hover {
-        transform: scale(1.05);
-
         &::after {
           width: 100%;
         }
@@ -55,26 +53,42 @@
         height: 1px;
         background-color: white;
         width: 0%;
-        top: calc(100% + 1px);
+        top: 100%;
         transition: width 0.35s ease;
       }
     }
 
     .search-bar-container {
       position: relative;
-      width: 300px;
       /* Adjust the width as needed */
     }
 
     .search-input {
       display: flex;
+      align-items: center;
+
+      .icon {
+        position: absolute;
+        left: 10px;
+        color: rgba(20, 30, 70, 0.8);
+      }
     }
 
     .search-bar {
       flex: 1;
       padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 50px;
+      color: #141e46;
+      padding-left: 40px;
+      width: 200px;
+      transition: width 0.35s ease;
+      &::placeholder {
+        color: rgba(20, 30, 70, 0.8);
+      }
+      &:focus {
+        outline: none;
+        width: 280px;
+      }
     }
 
     .search-icon-button {
@@ -83,21 +97,81 @@
       cursor: pointer;
     }
 
-    .search-results {
+    .search-results-wrapper {
       position: absolute;
-      top: 100%;
+      border-radius: 8px;
+      top: calc(100% + 2px);
       left: 0;
       width: 100%;
       background: #fff;
-      border: 1px solid #ccc;
-      border-top: none;
-      border-radius: 0 0 5px 5px;
-      max-height: 150px;
-      overflow-y: auto;
-      padding:10px;
-      color:black;
-      
+      color: #141e46;
+      box-shadow: 0 12px 12px rgba(20, 30, 70, 0.4);
+      transition: opacity 0.35s ease;
+      opacity: 0;
+      .search-results {
+        padding: 15px 0px;
+        overflow-y: hidden;
+        display: flex;
+        flex-direction: column;
+        max-height: 250px;
+        width: 100%;
+        div {
+          width: 100%;
+          padding: 0px 15px;
+          display: flex;
+          align-items: center;
+          height: 50px;
+          transition: background-color 0.35s ease;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+          &:nth-child(1) {
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+          }
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+          }
+          svg {
+            margin-right: 5px;
+          }
+          .avatar {
+            flex-shrink: 0;
+          }
+          .name {
+            width: 90px;
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .addFriend {
+            margin-left: auto;
+            color: white;
+            background-color: #c70039;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            justify-content: center;
+            padding: 5px 10px 5px 8px;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            box-shadow: 0 2px 2px rgba(20, 30, 70, 0);
+            flex-shrink: 0;
+            svg {
+              font-size: 1.4em;
+            }
+            &:hover {
+              cursor: pointer;
+              transform: translateY(-5%);
+              box-shadow: 0 2px 2px rgba(20, 30, 70, 0.4);
+            }
+          }
+        }
+      }
+      &.active {
+        box-shadow: 0 12px 12px rgba(20, 30, 70, 0.4);
+        opacity: 1;
+        .search-results {
+          overflow-y: scroll;
+        }
+      }
     }
-
   }
 }
