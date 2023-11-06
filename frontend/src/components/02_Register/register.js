@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./register.scss";
 import axios from "axios";
 
 function Register() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -44,6 +45,7 @@ function Register() {
       .post("https://localhost:7195/api/users", formData)
       .then((response) => {
         console.log(response.data);
+        navigate("/login");
         // Handle successful registration, e.g., redirect to login page
       })
       .catch((error) => {
