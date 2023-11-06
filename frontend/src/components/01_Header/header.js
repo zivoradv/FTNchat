@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { userContext } from "../../App";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -8,13 +8,39 @@ import {
   Person,
   Notifications,
   ExitToApp,
-  Logout,
+  Search,
 } from "@mui/icons-material";
 import "./header.scss";
 
 function Header() {
   const { user, logoutUser } = useContext(userContext);
   const location = useLocation();
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`https://localhost:7195/api/search?q=${searchQuery}`);
+      if (response.status === 200) {
+        const data = await response.json();
+        setSearchResults(data);
+      } else if (response.status === 400) {
+        console.error("Search request failed: Bad Request - Query parameter is required.");
+      } else {
+        console.error("Search request failed: Internal Server Error");
+      }
+    } catch (error) {
+      console.error("Error while searching:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch();
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery]);
 
   return (
     <div className="header">
@@ -25,6 +51,27 @@ function Header() {
       <div className="menu">
         {user ? (
           <>
+            <div className="search-bar-container">
+              <div className="search-input">
+                <input
+                  type="search"
+                  className="search-bar"
+                  placeholder="Search for a friend..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              {searchResults.length > 0 && (
+                <div className="search-results">
+                  {searchResults.map((result) => (
+                    <div key={result.id}>
+                      <span>{result.username}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Link to="/profile">
               <Person /> <span className="header-text"> Profile </span>
             </Link>
@@ -39,7 +86,7 @@ function Header() {
               <span className="header-text"> Notifications </span>
             </Link>
             <Link to="/login" onClick={logoutUser}>
-              <Logout /> <span className="header-text"> Log out </span>
+              <ExitToApp /> <span className="header-text"> Log out </span>
             </Link>
           </>
         ) : (
